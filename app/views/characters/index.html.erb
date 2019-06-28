@@ -1,0 +1,42 @@
+<div class="uk-flex uk-flex-center" style="margin-top: 2rem;">
+  
+  <div class="uk-flex uk-flex-row">
+    
+    <% @characters.each do |key, char| %>
+      <% classDef = @class_definitions.find{|x| x['definition_hash'] == char['classHash'].to_s }.definition %>
+      <% raceDef = @race_definitions.find{|x| x['definition_hash'] == char['raceHash'].to_s }.definition %>
+      <% genderDef = @gender_definitions.find{|x| x['definition_hash'] == char['genderHash'].to_s }.definition %>
+
+      <div class="uk-flex uk-flex-column <%= current_character_id == key ? 'is-selected' : '' %>" style="width: 380px; border: 3px solid black; margin: 1rem;">
+        <div class="uk-background-cover" style="background-image: url(<%= bungie_url(char['emblemBackgroundPath']) %>);">
+          <div class="uk-flex uk-flex-row">
+            <div class="uk-flex uk-flex-column">
+              <%= image_tag bungie_url(char['emblemPath']) %>
+            </div>
+            <div class="uk-flex uk-flex-column uk-flex-1" style="margin-left: 1rem; color: white; ">
+              <div style="font-size: 2rem;">
+                <%= classDef['displayProperties']['name'] %>
+              </div>
+              <div style="font-size: 1.2rem;">
+                <%= raceDef['displayProperties']['name'] %> <%= genderDef['displayProperties']['name'] %>
+              </div>
+            </div>
+
+            <div class="uk-flex uk-flex-column uk-text-right" style="color: white; margin-right: 1rem;">
+              <div style="font-size: 2rem; color: lightblue;"><%= char['light'] %></div>
+              <div><%= char['baseCharacterLevel'] %></div>
+            </div>
+          </div>
+        </div>
+        <div style="background-color: black; color: white; padding: 1rem;">
+          <div><%= raceDef['displayProperties']['description'] %></div>
+          <hr />
+          <div>Last played: <%= char['dateLastPlayed'].to_datetime.in_time_zone('Europe/Ljubljana').strftime("%d.%m.%Y %H:%M") %></div>
+          <div>Min played this season: <%= char['minutesPlayedThisSession'] %> min</div>
+          <div>Total played: <%= char['minutesPlayedTotal'].to_i / 60 %> hours</div>
+        </div>
+      </div> 
+    <% end %>
+
+  </div>
+</div>

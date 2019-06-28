@@ -1,0 +1,53 @@
+<nav class="uk-navbar-container" uk-navbar style="background-color: black; color: white;">
+  <div class="uk-navbar-left">
+    <ul class="uk-navbar-nav">
+      <li>
+        <%= link_to root_path do %>
+          <b>Ruby's Destiny</b>
+        <% end %>
+      </li>
+
+      <li>
+        <%= link_to 'Characters', characters_path %>
+      </li>
+
+      <li>
+        <%= link_to 'Pursuits', progressions_path %>
+      </li>
+
+      <li>
+        <%= link_to 'Inventory', inventories_path %>
+      </li>
+
+      <li>
+        <%= link_to 'Collections', root_path %>
+      </li>
+
+      <li>
+        <%= link_to 'Triumphs', root_path %>
+      </li>
+
+      <li>
+        <%= link_to 'Refresh', refresh_path %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="uk-navbar-right">
+    <ul class="uk-navbar-nav">
+      <li>
+          <a href="#">TODO</a>
+          <div class="uk-navbar-dropdown">
+              <ul class="uk-nav uk-navbar-dropdown-nav">
+                  <li><a href="#">Item</a></li>
+                  <li class="uk-nav-header">Header</li>
+                  <li><a href="#">Item</a></li>
+                  <li><a href="#">Item</a></li>
+                  <li class="uk-nav-divider"></li>
+                  <li><a href="#">Item</a></li>
+              </ul>
+          </div>
+      </li>
+    </ul>
+  </div>
+</nav>

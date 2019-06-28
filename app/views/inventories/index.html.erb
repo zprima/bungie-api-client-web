@@ -1,0 +1,101 @@
+<div class="uk-flex">
+  <div class="uk-flex uk-flex-row uk-flex-wrap">
+
+    <% @character_equipment.each do |char_equip_item| %>
+      <% ce = char_equip_item['char_equip'] %>
+      <% item_def = char_equip_item['item_def'] %>
+      <% dmg_def = char_equip_item['dmg_def'] %>
+      <% instance_def = char_equip_item['instance_def'] %>
+      <% stats = char_equip_item['stats'] %>
+      <% stat_group = char_equip_item['stat_group'] %>
+
+      <div class="uk-flex uk-flex-column" style="margin: 1rem; width: 280px; color: white; border: 1px solid black; background-color: black;">
+        <div class="uk-flex uk-flex-row <%= pursuit_card_color(item_def['inventory']['tierTypeName']) %>">
+          <%= image_tag bungie_url(item_def['displayProperties']['icon']), style:"width: 60px"%>
+          <div class="uk-flex uk-flex-column uk-flex-1">
+            <div><%= item_def['displayProperties']['name'] %></div>
+            <div style="font-size:12px;"><%= item_def['itemTypeAndTierDisplayName']%></div>
+          </div>
+          <div class="uk-flex uk-flex-column">
+            <div><%= instance_def['primaryStat']['value']%></div>
+          </div>
+        </div>
+
+        <div style="font-size: 10px;"><%= item_def['displaySource']%></div>
+
+        <div class="uk-flex uk-flex-column" style="padding: 0.2rem;">
+          <% stats.each do |stat|%>
+            <% next if stat['stat_def']['displayProperties']['name'].blank? %>
+            <% next if stat['stat']['value'].zero? %>
+            <div class="uk-flex uk-flex-row">
+              <div class="uk-flex uk-flex-column uk-flex-1" style="margin-bottom: 0.2rem;">
+                <div><%= stat['stat_def']['displayProperties']['name'] %></div>
+                <div style="font-size: 10px;"><%= stat['stat_def']['displayProperties']['description'] %></div>
+              </div>
+              <div><%= stat['value'] %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>    
+    <% end %>
+
+  </div>
+</div>
+
+<hr>
+
+<div class="uk-flex">
+  <div class="uk-flex uk-flex-row uk-flex-wrap">
+    <% @character_inventory.each do |ci| %>
+      <% item_def = ci['item_def'] %>
+      <% instance_def = ci['instance_def'] %>
+      
+      <div class="uk-flex uk-flex-column" style="margin: 1rem; width: 280px; color: white; border: 1px solid black; background-color: black;">
+        <div class="uk-flex uk-flex-row <%= pursuit_card_color(item_def['inventory']['tierTypeName']) %>">
+          <%= image_tag bungie_url(item_def['displayProperties']['icon']), style:"width: 60px"%>
+          <div class="uk-flex uk-flex-column uk-flex-1">
+            <div><%= item_def['displayProperties']['name'] %></div>
+            <div style="font-size:12px;"><%= item_def['itemTypeAndTierDisplayName']%></div>
+          </div>
+          <div class="uk-flex uk-flex-column">
+            <div><%= instance_def['primaryStat']['value']%></div>
+          </div>
+        </div>
+
+        <div style="font-size: 10px;"><%= item_def['displaySource']%></div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+
+<% @profile_inventory.each do |k, group| %>
+<div class="uk-flex">
+  <div class="uk-flex uk-flex-row uk-flex-wrap">
+    <% group.each do |pi| %>
+      <% item_def = pi['item_def'] %>
+      <% instance_def = pi['instance_def'] %>
+      
+      <div class="uk-flex uk-flex-column" style="margin: 1rem; width: 280px; color: white; border: 1px solid black; background-color: black;">
+        <div class="uk-flex uk-flex-row <%= pursuit_card_color(item_def['inventory']['tierTypeName']) %>">
+          <%= image_tag bungie_url(item_def['displayProperties']['icon']), style:"width: 60px"%>
+          <div class="uk-flex uk-flex-column uk-flex-1">
+            <div><%= item_def['displayProperties']['name'] %></div>
+            <div style="font-size:12px;"><%= item_def['itemTypeAndTierDisplayName']%></div>
+          </div>
+          <div class="uk-flex uk-flex-column">
+            <% if instance_def['primaryStat'] %>
+              <div><%= instance_def['primaryStat']['value']%></div>
+            <% end %>
+          </div>
+        </div>
+
+        <div style="font-size: 10px;"><%= item_def['displaySource']%></div>
+        <div style="font-size: 10px;"><%= item_def['inventory']['bucketTypeHash']%></div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<hr>
+<% end %>
