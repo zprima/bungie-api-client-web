@@ -3,9 +3,9 @@
   <div class="uk-flex uk-flex-row">
     
     <% @characters.each do |key, char| %>
-      <% classDef = @class_definitions.find{|x| x['definition_hash'] == char['classHash'].to_s }.definition %>
-      <% raceDef = @race_definitions.find{|x| x['definition_hash'] == char['raceHash'].to_s }.definition %>
-      <% genderDef = @gender_definitions.find{|x| x['definition_hash'] == char['genderHash'].to_s }.definition %>
+      <% classDef = @class_definitions.find_by(definition_hash: char['classHash']).definition %>
+      <% raceDef = @race_definitions.find_by(definition_hash: char['raceHash']).definition %>
+      <% genderDef = @gender_definitions.find_by(definition_hash: char['genderHash']).definition %>
 
       <div class="uk-flex uk-flex-column <%= current_character_id == key ? 'is-selected' : '' %>" style="width: 380px; border: 3px solid black; margin: 1rem;">
         <div class="uk-background-cover" style="background-image: url(<%= bungie_url(char['emblemBackgroundPath']) %>);">

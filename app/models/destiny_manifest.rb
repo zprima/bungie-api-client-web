@@ -10,7 +10,7 @@ class DestinyManifest
     cache_key = "manifest_#{DestinyManifestVersion.last.manifest_version}"
 
     Rails.cache.fetch("#{cache_key}/#{definition_name}" , expires: 1.day) do
-      where(definition_name: definition_name).to_a
+      where(definition_name: definition_name)
     end
   end
 

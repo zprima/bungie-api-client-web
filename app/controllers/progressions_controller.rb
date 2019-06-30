@@ -1,30 +1,52 @@
 class ProgressionsController < ApplicationController
   def index
-    bucket = DestinyInventoryBucket.pursuits
-    profile = DestinyProfile.for(current_user) 
+    @bucket = DestinyInventoryBucket.pursuits
+    @profile = DestinyProfile.for(current_user)
 
-    
-    
-    
-    @item_components = profile.item_components
-    @character_uninstanced_item_components = profile.character_uninstanced_item_components[current_character_id]
+    @item_components = @profile.item_components
+    @character_uninstanced_item_components = @profile.character_uninstanced_item_components[current_character_id]
 
     @inventory_item_definitions = DestinyManifest.for(DestinyDefinition.inventoryItem)
     @objective_definitions = DestinyManifest.for(DestinyDefinition.objective)
 
+    @local_item_defs = {}
+    @local_obj_defs = {}
+
     # @milestones = profile.character_progressions[current_character_id]['milestones']
     # @milestoneDefs = DestinyManifest.for(DestinyDefinition.milestone)
 
+    build_pursuits
+    build_milestones
+  end
 
-    @pursuits = profile.character_inventories[current_character_id]['items'].select{|x| x['bucketHash'] == bucket}
-    @pursuits = @pursuits.map do |pursuit|
-      item_def = @inventory_item_definitions.find{|x| x['definition_hash'] == pursuit['itemHash'].to_s}.definition
+  private
+
+  def build_milestones
+  end
+
+  def get_item_def(item_hash)
+    @inventory_item_definitions.find_by(definition_hash: item_hash).definition
+  end
+
+  def get_objective(obj_hash)
+    @objective_definitions.find_by(definition_hash: obj_hash).definition
+  end
+
+  def get_pursuits
+    @profile.character_inventories[current_character_id]['items'].select{|x| x['bucketHash'] == @bucket}
+  end
+
+  def build_pursuits
+    _pursuits = get_pursuits
+
+    @pursuits = _pursuits.map do |pursuit|
+      item_def = get_item_def(pursuit['itemHash'])
 
       progress_completed = -1
 
       objectives = []
       if item_def['objectives']
-        objectives = 
+        objectives =
               if pursuit['itemInstanceId'] && @item_components['objectives']['data'][pursuit['itemInstanceId']]
                 @item_components['objectives']['data'][pursuit['itemInstanceId']]['objectives']
               elsif @character_uninstanced_item_components
@@ -35,7 +57,7 @@ class ProgressionsController < ApplicationController
 
         sum_objective_progress = 0
         objectives = objectives.map do |o|
-          obj_def = @objective_definitions.find{|x| x['definition_hash'] == o['objectiveHash'].to_s}.definition
+          obj_def = get_objective(o['objectiveHash'])
 
           objective_progress = (100 * o['progress']) / o['completionValue']
           sum_objective_progress += objective_progress
